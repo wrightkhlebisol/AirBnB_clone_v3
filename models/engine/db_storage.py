@@ -13,7 +13,7 @@ from models.state import State
 from models.user import User
 from os import getenv
 import sqlalchemy
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, func
 from sqlalchemy.orm import scoped_session, sessionmaker
 
 classes = {"Amenity": Amenity, "City": City,
@@ -37,19 +37,44 @@ class DBStorage:
                                              HBNB_MYSQL_PWD,
                                              HBNB_MYSQL_HOST,
                                              HBNB_MYSQL_DB))
+
         if HBNB_ENV == "test":
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
         """query on the current database session"""
         new_dict = {}
+
         for clss in classes:
             if cls is None or cls is classes[clss] or cls is clss:
                 objs = self.__session.query(classes[clss]).all()
+
                 for obj in objs:
                     key = obj.__class__.__name__ + '.' + obj.id
                     new_dict[key] = obj
+
         return (new_dict)
+
+    def get(self, cls, id):
+        """retrieve one object"""
+        new_dict = {}
+        objs = self.__session.query(cls).filter(cls.id == id).all()
+
+        for obj in objs:
+            key = obj.__class__.__name__ + '.' + obj.id
+            new_dict[key] = obj
+
+        return (new_dict)
+
+    def count(self, cls=None):
+        """Count number of objects matching cls or all otherwise"""
+        count = 0
+
+        for clss in classes:
+            if cls is None or cls is classes[clss] or cls is clss:
+                count += self.__session.query(func.count(classes[clss])).scalar()
+
+        return (count)
 
     def new(self, obj):
         """add the object to the current database session"""
@@ -61,6 +86,7 @@ class DBStorage:
 
     def delete(self, obj=None):
         """delete from the current database session obj if not None"""
+
         if obj is not None:
             self.__session.delete(obj)
 
