@@ -58,13 +58,9 @@ class DBStorage:
     def get(self, cls, id):
         """retrieve one object"""
         new_dict = {}
-        objs = self.__session.query(cls).filter(cls.id == id).all()
+        objs = self.__session.query(cls).filter(cls.id == id).scalar()
 
-        for obj in objs:
-            key = obj.__class__.__name__ + '.' + obj.id
-            new_dict[key] = obj
-
-        return (new_dict)
+        return (objs)
 
     def count(self, cls=None):
         """Count number of objects matching cls or all otherwise"""
@@ -73,7 +69,8 @@ class DBStorage:
         for clss in classes:
             if cls is None or cls is classes[clss] or cls is clss:
                 count += self.__session.query(
-                    func.count(classes[clss])).scalar()
+                    func.count(clss)
+                ).scalar()
 
         return (count)
 
