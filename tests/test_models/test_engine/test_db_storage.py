@@ -6,6 +6,7 @@ Contains the TestDBStorageDocs and TestDBStorage classes
 from datetime import datetime
 import inspect
 import models
+from models import storage
 from models.engine import db_storage
 from models.amenity import Amenity
 from models.base_model import BaseModel
@@ -61,11 +62,33 @@ test_db_storage.py'])
 
     def test_dbs_func_docstrings(self):
         """Test for the presence of docstrings in DBStorage methods"""
+
         for func in self.dbs_f:
             self.assertIsNot(func[1].__doc__, None,
                              "{:s} method needs a docstring".format(func[0]))
             self.assertTrue(len(func[1].__doc__) >= 1,
                             "{:s} method needs a docstring".format(func[0]))
+
+
+class TestDBStorage(unittest.TestCase):
+    """Test the DB Storage class"""
+    @unittest.skipIf(models.storage_t == 'db', "not testing db storage")
+    def test_get_by_class_id(self):
+        """Test that it returns right data for class and id."""
+        first_state = list(storage.all(State).values())[0]
+        first_state = first_state.to_dict()
+        self.assertIn('id', first_state)
+        self.assertIn('created_at', first_state)
+        self.assertIn('updated_at', first_state)
+
+        self.assertTrue(storage.get(State, first_state.get('id')))
+        self.assertIn('id', storage.get(
+            State, first_state.get('id')).to_dict())
+
+    def test_count_all_or_class(self):
+        """Test that it return number of item in db."""
+        self.assertGreaterEqual(storage.count(), 0)
+        self.assertGreaterEqual(storage.count(State), 0)
 
 
 class TestFileStorage(unittest.TestCase):

@@ -43,9 +43,11 @@ class FileStorage:
         new_dict = {}
 
         for key, value in self.__objects.items():
-            if (cls == value.__class__ or cls == value.__class__.__name__) and (id == value.id):
-                return (value)
+            if (
+                cls == value.__class__ or cls == value.__class__.__name__
+            ) and (id == value.id):
 
+                return (value)
 
     def count(self, cls=None):
         """Count number of objects matching cls or all otherwise"""
@@ -60,7 +62,6 @@ class FileStorage:
         count = len(self.__objects)
 
         return (count)
-
 
     def new(self, obj):
         """sets in __objects the obj with key <obj class name>.id"""
@@ -80,14 +81,11 @@ class FileStorage:
 
     def reload(self):
         """deserializes the JSON file to __objects"""
-        try:
-            with open(self.__file_path, 'r') as f:
-                jo = json.load(f)
+        with open(self.__file_path, 'r') as f:
+            jo = json.load(f)
 
-            for key in jo:
-                self.__objects[key] = classes[jo[key]["__class__"]](**jo[key])
-        except:
-            pass
+        for key in jo:
+            self.__objects[key] = classes[jo[key]["__class__"]](**jo[key])
 
     def delete(self, obj=None):
         """delete obj from __objects if it’s inside"""
