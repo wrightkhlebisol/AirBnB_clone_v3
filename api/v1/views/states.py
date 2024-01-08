@@ -19,28 +19,41 @@ def states():
 
         return make_response(jsonify(all_states))
     elif request.method == 'POST':
-        return make_response(jsonify('POSTING...'))
+        if not request.is_json:
+            return make_response("Not a JSON", 400)
+
+        request_body = request.get_json()
+
+        if not request_body.get('name'):
+            return make_response("Missing name", 400)
+
+        new_state = State(request_body)
+        print(new_state)
+        # storage.new(request_body)
+        # storage.save()
+
+        return make_response(jsonify(request_body), 201)
 
 
 @app_views.route('/states/<state_id>', methods=['GET', 'PUT', 'DELETE'])
 def states_by_id(state_id):
     """Get state by ID"""
 
+    states = storage.get(State, state_id)
+
+    if not states:
+        return abort(404)
+
     if request.method == 'GET':
-        states = storage.get(State, state_id)
-
-        if states:
-            return make_response(jsonify(states.to_dict()))
-        else:
-            return abort(404)
+        return make_response(jsonify(states.to_dict()))
     elif request.method == 'DELETE':
-        state = storage.get(State, state_id)
-
-        if not state:
-            return abort(404)
         storage.delete(state)
         storage.save()
 
         return make_response(jsonify({}), 200)
     else:
-        pass
+        if not request.is_json:
+            return make_response("Not a JSON", 400)
+        request_body = request.get_json()
+
+        return make_response(jsonify(request_body), 200)
