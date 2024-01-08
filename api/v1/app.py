@@ -7,7 +7,7 @@ from models import storage
 from os import getenv
 
 
-host = getenv('HBNB_API_HOST', '0.0.0.0'),
+host = getenv('HBNB_API_HOST', '0.0.0.0')
 port = getenv('HBNB_API_PORT', 5000)
 
 app = Flask(__name__)
