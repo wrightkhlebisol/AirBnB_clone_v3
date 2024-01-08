@@ -58,7 +58,7 @@ class DBStorage:
     def get(self, cls, id):
         """retrieve one object"""
         new_dict = {}
-        objs = self.__session.query(cls).filter(cls.id == id).scalar()
+        objs = self.__session.query(cls).get(id)
 
         return (objs)
 
