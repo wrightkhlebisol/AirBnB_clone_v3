@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """AirBNB Flask API"""
 from api.v1.views import app_views
-from flask import Flask
+from flask import Flask, make_response, jsonify
 from models import storage
 from os import getenv
 
@@ -15,7 +15,18 @@ app.register_blueprint(app_views)
 
 @app.teardown_appcontext
 def teardown_appcontext(exception):
+    """close storage session."""
     storage.close()
+
+
+@app.errorhandler(404)
+def page_not_found(error):
+    """Handler for 404 error."""
+    error_resp = {
+        "error": "Not found"
+    }
+
+    return make_response(jsonify(error_resp), 404)
 
 
 if __name__ == '__main__':
