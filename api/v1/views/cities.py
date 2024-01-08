@@ -6,18 +6,18 @@ from models import storage
 from models.city import City
 
 
-@app_views.route('/citys/', methods=['GET', 'POST'])
-def citys():
+@app_views.route('/cities/', methods=['GET', 'POST'])
+def cities():
     """Get list of all city"""
 
     if request.method == 'GET':
-        all_citys = []
-        citys = storage.all(City)
+        all_cities = []
+        cities = storage.all(City)
 
-        for k, v in citys.items():
-            all_citys.append(v.to_dict())
+        for k, v in cities.items():
+            all_cities.append(v.to_dict())
 
-        return make_response(jsonify(all_citys))
+        return make_response(jsonify(all_cities))
     elif request.method == 'POST':
         if not request.is_json:
             return make_response("Not a JSON", 400)
@@ -35,17 +35,17 @@ def citys():
         return make_response(jsonify(request_body), 201)
 
 
-@app_views.route('/citys/<city_id>', methods=['GET', 'PUT', 'DELETE'])
-def citys_by_id(city_id):
+@app_views.route('/cities/<city_id>', methods=['GET', 'PUT', 'DELETE'])
+def cities_by_id(city_id):
     """Get city by ID"""
 
-    citys = storage.get(City, city_id)
+    cities = storage.get(City, city_id)
 
-    if not citys:
+    if not cities:
         return abort(404)
 
     if request.method == 'GET':
-        return make_response(jsonify(citys.to_dict()))
+        return make_response(jsonify(cities.to_dict()))
     elif request.method == 'DELETE':
         storage.delete(city)
         storage.save()
