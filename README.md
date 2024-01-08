@@ -170,8 +170,8 @@ Public Domain. No copy write protection.
 
 _For this project, we expect you to look at these concepts:_
 
-*   [REST API](/concepts/45)
-*   [AirBnB clone](https://github.com/GideonBature/AirBnB_clone/tree/main/concept_pages/airbnb_clone)
+*   [REST API](https://github.com/wrightkhlebisol/AirBnB_clone_v3/tree/master/concept_pages/rest_api)
+*   [AirBnB clone](https://github.com/wrightkhlebisol/AirBnB_clone_v3/tree/master/concept_pages/airbnb_clone)
 
 Resources
 ---------
