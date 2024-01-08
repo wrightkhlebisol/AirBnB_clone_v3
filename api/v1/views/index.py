@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """Blueprint views"""
 from api.v1.views import app_views
-from flask import jsonify
+from flask import jsonify, make_response
 from models import storage
 from models.amenity import Amenity
 from models.city import City
@@ -22,7 +22,7 @@ classes = {
 
 @app_views.route('/status')
 def status():
-    return jsonify({'status': 'OK'})
+    return make_response(jsonify({'status': 'OK'}))
 
 
 @app_views.route('/stats')
@@ -32,4 +32,4 @@ def stats():
     for k, v in classes.items():
         stats[k.lower()] = storage.count(v)
 
-    return jsonify(stats)
+    return make_response(jsonify(stats))
