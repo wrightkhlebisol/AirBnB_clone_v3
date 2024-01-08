@@ -6,18 +6,18 @@ from models import storage
 from models.amenity import Amenity
 
 
-@app_views.route('/amenitys/', methods=['GET', 'POST'])
-def amenitys():
+@app_views.route('/amenities/', methods=['GET', 'POST'])
+def amenities():
     """Get list of all amenity"""
 
     if request.method == 'GET':
-        all_amenitys = []
-        amenitys = storage.all(Amenity)
+        all_amenities = []
+        amenities = storage.all(Amenity)
 
-        for k, v in amenitys.items():
-            all_amenitys.append(v.to_dict())
+        for k, v in amenities.items():
+            all_amenities.append(v.to_dict())
 
-        return make_response(jsonify(all_amenitys))
+        return make_response(jsonify(all_amenities))
     elif request.method == 'POST':
         if not request.is_json:
             return make_response("Not a JSON", 400)
@@ -35,17 +35,17 @@ def amenitys():
         return make_response(jsonify(request_body), 201)
 
 
-@app_views.route('/amenitys/<amenity_id>', methods=['GET', 'PUT', 'DELETE'])
-def amenitys_by_id(amenity_id):
+@app_views.route('/amenities/<amenity_id>', methods=['GET', 'PUT', 'DELETE'])
+def amenities_by_id(amenity_id):
     """Get amenity by ID"""
 
-    amenitys = storage.get(Amenity, amenity_id)
+    amenities = storage.get(Amenity, amenity_id)
 
-    if not amenitys:
+    if not amenities:
         return abort(404)
 
     if request.method == 'GET':
-        return make_response(jsonify(amenitys.to_dict()))
+        return make_response(jsonify(amenities.to_dict()))
     elif request.method == 'DELETE':
         storage.delete(amenity)
         storage.save()
