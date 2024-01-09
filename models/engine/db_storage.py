@@ -68,9 +68,7 @@ class DBStorage:
 
         for clss in classes:
             if cls is None or cls is classes[clss] or cls is clss:
-                count += self.__session.query(
-                    func.count(clss)
-                ).scalar()
+                count += self.__session.query(classes[clss]).count()
 
         return (count)
 
