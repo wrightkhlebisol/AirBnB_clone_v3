@@ -11,6 +11,7 @@ from models.place import Place
 from models.review import Review
 from models.state import State
 from models.user import User
+import os
 
 classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
            "Place": Place, "Review": Review, "State": State, "User": User}
@@ -81,11 +82,13 @@ class FileStorage:
 
     def reload(self):
         """deserializes the JSON file to __objects"""
-        with open(self.__file_path, 'r') as f:
-            jo = json.load(f)
 
-        for key in jo:
-            self.__objects[key] = classes[jo[key]["__class__"]](**jo[key])
+        if os.path.exists(self.__file_path):
+            with open(self.__file_path, 'r') as f:
+                jo = json.load(f)
+
+            for key in jo:
+                self.__objects[key] = classes[jo[key]["__class__"]](**jo[key])
 
     def delete(self, obj=None):
         """delete obj from __objects if it’s inside"""
