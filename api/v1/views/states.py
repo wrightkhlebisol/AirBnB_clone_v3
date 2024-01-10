@@ -56,5 +56,8 @@ def states_by_id(state_id):
         if not request.is_json:
             return make_response("Not a JSON", 400)
         request_body = request.get_json()
+        state.name = request_body['name']
+        storage.new(state)
+        storage.save()
 
-        return make_response(jsonify(request_body), 200)
+        return make_response(jsonify(state.to_dict()), 200)
