@@ -40,13 +40,13 @@ def states():
 def states_by_id(state_id):
     """Get state by ID"""
 
-    states = storage.get(State, state_id)
+    state = storage.get(State, state_id)
 
-    if not states:
+    if not state:
         return abort(404)
 
     if request.method == 'GET':
-        return make_response(jsonify(states.to_dict()))
+        return make_response(jsonify(state.to_dict()))
     elif request.method == 'DELETE':
         storage.delete(state)
         storage.save()
