@@ -28,11 +28,9 @@ def cities():
             return make_response("Missing name", 400)
 
         new_city = City(request_body)
-        print(new_city)
-        # storage.new(request_body)
-        # storage.save()
+        new_city.save()
 
-        return make_response(jsonify(request_body), 201)
+        return make_response(jsonify(new_city.to_dict()), 201)
 
 
 @app_views.route('/cities/<city_id>', methods=['GET', 'PUT', 'DELETE'])

@@ -28,11 +28,9 @@ def places():
             return make_response("Missing name", 400)
 
         new_place = Place(request_body)
-        print(new_place)
-        # storage.new(request_body)
-        # storage.save()
+        new_place.save()
 
-        return make_response(jsonify(request_body), 201)
+        return make_response(jsonify(new_place.to_dict()), 201)
 
 
 @app_views.route('/places/<place_id>', methods=['GET', 'PUT', 'DELETE'])

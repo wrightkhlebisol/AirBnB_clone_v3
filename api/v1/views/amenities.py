@@ -27,12 +27,10 @@ def amenities():
         if not request_body.get('name'):
             return make_response("Missing name", 400)
 
-        new_amenity = Amenity(request_body)
-        print(new_amenity)
-        # storage.new(request_body)
-        # storage.save()
+        new_amenity = Amenity(**request_body)
+        new_amenity.save()
 
-        return make_response(jsonify(request_body), 201)
+        return make_response(jsonify(new_amenity.to_dict()), 201)
 
 
 @app_views.route('/amenities/<amenity_id>', methods=['GET', 'PUT', 'DELETE'])

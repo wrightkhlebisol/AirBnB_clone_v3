@@ -28,11 +28,9 @@ def reviews():
             return make_response("Missing name", 400)
 
         new_review = Review(request_body)
-        print(new_review)
-        # storage.new(request_body)
-        # storage.save()
+        new_review.save()
 
-        return make_response(jsonify(request_body), 201)
+        return make_response(jsonify(new_review.to_dict()), 201)
 
 
 @app_views.route('/reviews/<review_id>', methods=['GET', 'PUT', 'DELETE'])

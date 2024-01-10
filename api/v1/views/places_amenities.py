@@ -29,11 +29,9 @@ def place_amenities():
             return make_response("Missing name", 400)
 
         new_place_amenity = Place(request_body)
-        print(new_place_amenity)
-        # storage.new(request_body)
-        # storage.save()
+        new_place_amenity.save()
 
-        return make_response(jsonify(request_body), 201)
+        return make_response(jsonify(new_place_amenity.to_dict()), 201)
 
 
 @app_views.route('/place_amenitys/<place_amenity_id>',

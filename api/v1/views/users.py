@@ -28,11 +28,9 @@ def users():
             return make_response("Missing name", 400)
 
         new_user = User(request_body)
-        print(new_user)
-        # storage.new(request_body)
-        # storage.save()
+        new_user.save()
 
-        return make_response(jsonify(request_body), 201)
+        return make_response(jsonify(new_user.to_dict()), 201)
 
 
 @app_views.route('/users/<user_id>', methods=['GET', 'PUT', 'DELETE'])
