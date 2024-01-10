@@ -27,12 +27,13 @@ def states():
         if not request_body.get('name'):
             return make_response("Missing name", 400)
 
-        new_state = State(request_body)
-        print(new_state)
-        # storage.new(request_body)
-        # storage.save()
+        new_state = State(**request_body)
+        new_state.save()
 
-        return make_response(jsonify(request_body), 201)
+        return make_response(
+            jsonify(
+                new_state.to_dict()
+            ), 201)
 
 
 @app_views.route('/states/<state_id>', methods=['GET', 'PUT', 'DELETE'])

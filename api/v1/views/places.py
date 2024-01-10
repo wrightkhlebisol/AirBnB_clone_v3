@@ -6,7 +6,7 @@ from models import storage
 from models.place import Place
 
 
-@app_views.route('/places/', methods=['GET', 'POST'])
+@app_views.route('/places', methods=['GET', 'POST'])
 def places():
     """Get list of all place"""
 
