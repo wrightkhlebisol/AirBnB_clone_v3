@@ -53,5 +53,8 @@ def amenities_by_id(amenity_id):
         if not request.is_json:
             return make_response("Not a JSON", 400)
         request_body = request.get_json()
+        amenities.name = request_body['name']
+        storage.new(amenities)
+        storage.save()
 
-        return make_response(jsonify(request_body), 200)
+        return make_response(jsonify(amenities.to_dict()), 200)
